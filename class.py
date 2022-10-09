@@ -8,7 +8,7 @@ class User:
 
     def verefication_login(self) -> str:
         """
-        Проверка логина пользователя по требованиям.
+        Проверка логина пользователя по требованиям.!!!
         :return: str (возвращает проверенный логин)
         """
         user_login = self.request_user_login()
