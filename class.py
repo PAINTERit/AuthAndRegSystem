@@ -8,7 +8,7 @@ class User:
 
     def verefication_login(self) -> str:
         """
-        Проверка логина пользователя по требованиям.!!!
+        Проверка логина пользователя по требованиям.
         :return: str (возвращает проверенный логин)
         """
         user_login = self.request_user_login()
@@ -91,7 +91,7 @@ class AuthSystem:
     def authorization(self) -> Optional[bool]:
         """
         Проведение авторизации пользователя.
-        :return: Optional[bool] (возвращает введенный логин)
+        :return: Optional[bool] (возвращает True для запуска скрипта)
         """
         if self.user.verefication_login() not in self.file_data.read_file_data():
             answer = input('Пользователя с таким логином не найдено. Хотите пройти регистрацию? Введите "да" или "нет": ')
@@ -108,7 +108,7 @@ class AuthSystem:
     def registration(self) -> bool:
         """
         Проведение регистрации пользователя.
-        :return:
+        :return: bool (возвращает True для запуска скрипта)
         """
         data = self.file_data.read_file_data()
         user_login = self.user.verefication_login()
@@ -126,7 +126,7 @@ class AuthSystem:
         """
         Запуск авторизации или регистрации в зависимости от выбора пользователя.
         :param action: int (выбранное действие пользователя)
-        :return:
+        :return: bool (возвращает запуск авторизации или регистрации)
         """
         if action == 1:
             return self.authorization()
@@ -136,7 +136,7 @@ class AuthSystem:
     def run_user_action(self) -> bool:
         """
         Проверка действия пользователя.
-        :return:
+        :return: bool (возвращает запуск auth с выбранным действием)
         """
         action = self.select_action()
         if action == 1 or action == 2:
@@ -147,11 +147,6 @@ class AuthSystem:
     def select_action(self) -> int:
         """
         Запрос на действие пользователя.
-        :return:
+        :return: int (возвращает действие выбранное пользователем)
         """
         return int(input('Приветствуем Вас в нашей системе! Вы хотите пройти авторизацию(1) или зарегистрироваться(2)? Введите "1" или "2": '))
-
-
-
-artem = AuthSystem()
-artem.start()
