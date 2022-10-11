@@ -11,7 +11,7 @@ class User:
         Проверка логина пользователя по требованиям.
         :return: str (возвращает проверенный логин)
         """
-        user_login = self.request_user_login()
+        user_login = self.request_user_data()[0]
         while True:
             if len(user_login) < 3 or len(user_login) > 20:
                 user_login = input('Неверное количество символов, введите логин заново: ')
@@ -24,38 +24,33 @@ class User:
         Проверка пароля пользователя по требованиям.
         :return: str (возвращает проверенный пароль)
         """
-        user_password = self.request_user_password()
+        user_password = self.request_user_data()[1]
         while True:
             if len(user_password) < 4 or len(user_password) > 32:
-                login = input('Неверное количество символов, введите пароль заново: ')
+                user_password = input('Неверное количество символов, введите пароль заново: ')
             else:
                 break
         return user_password
 
-    def request_user_login(self) -> str:
+    def request_user_data(self) -> tuple:
         """
-        Завпрос логина у пользователя.
-        :return: str (возвращает введенный логин)
+        Запрос логина и пароля у пользователя.
+        :return: tuple (возвращает кортеж)
         """
-        return input('Введите логин (от 3 до 20 символов): ')
-
-    def request_user_password(self) -> str:
-        """
-        Запрос пароля у пользователя.
-        :return: str (возвращает введенный пароль)
-        """
-        return input('Введите пароль (от 4 до 32 символов): ')
+        user_login = input('Введите логин (от 3 до 20 символов): ')
+        user_password = input('Введите пароль (от 4 до 32 символов): ')
+        return user_login, user_password
 
 
 class FileData:
     """
-    Используется для чтения списка с логинами и паролями пользователей или для добавления в список новых логинов и паролей.
+    Используется для чтения списка с данными пользователей или для добавления в список новых данных.
     """
 
     def read_file_data(self) -> list:
         """
         Открывает файл на чтение и возвращает список.
-        :return: list (возвращает список список для проверки)
+        :return: list (возвращает список для проверки)
         """
         with open('users', 'r', encoding='UTF-8') as read_file:
             return read_file.read().splitlines()
@@ -64,12 +59,12 @@ class FileData:
         """
         Открывает файл и добавляет в него новые логин и пароль.
         :param user_login: str (проверенный логин пользователя)
-        :param user_password: str (провереннный пароль пользователя)
+        :param user_password: str (проверенный пароль пользователя)
         :return: None
         """
         with open('users', 'a', encoding='UTF-8') as add_file:
-            add_file.write(user_login + '\n')
-            add_file.write(user_password + '\n')
+            add_file.write(f'{user_login}\n')
+            add_file.write(f'{user_password}\n')
 
 
 class AuthSystem:
@@ -81,7 +76,7 @@ class AuthSystem:
 
     def start(self) -> None:
         """
-        Осуществляет запуск скрипта.
+        Осуществляет запуск логики класса.
         :return: None
         """
         while True:
@@ -91,24 +86,25 @@ class AuthSystem:
     def authorization(self) -> Optional[bool]:
         """
         Проведение авторизации пользователя.
-        :return: Optional[bool] (возвращает True для запуска скрипта)
+        :return: Optional[bool] (возвращает True если авторизация прошла успешно)
         """
         if self.user.verefication_login() not in self.file_data.read_file_data():
-            answer = input('Пользователя с таким логином не найдено. Хотите пройти регистрацию? Введите "да" или "нет": ')
+            answer = input(
+                'Пользователя с таким логином не найдено. Хотите пройти регистрацию? Введите "да" или "нет": ')
             if answer == 'да':
                 self.registration()
             else:
                 print('Удачного времяпрепровождения!')
                 return True
         else:
-            self.user.request_user_password()
+            self.user.request_user_data()
             print('Авторизация прошла успешно!')
             return True
 
     def registration(self) -> bool:
         """
         Проведение регистрации пользователя.
-        :return: bool (возвращает True для запуска скрипта)
+        :return: bool (возвращает True если регистрация прошла успешно)
         """
         data = self.file_data.read_file_data()
         user_login = self.user.verefication_login()
@@ -130,8 +126,7 @@ class AuthSystem:
         """
         if action == 1:
             return self.authorization()
-        else:
-            return self.registration()
+        return self.registration()
 
     def run_user_action(self) -> bool:
         """
@@ -149,4 +144,11 @@ class AuthSystem:
         Запрос на действие пользователя.
         :return: int (возвращает действие выбранное пользователем)
         """
-        return int(input('Приветствуем Вас в нашей системе! Вы хотите пройти авторизацию(1) или зарегистрироваться(2)? Введите "1" или "2": '))
+        return int(input(
+            'Приветствуем Вас в нашей системе! Вы хотите пройти авторизацию(1) или зарегистрироваться(2)? '
+            'Введите "1" или "2": '))
+
+
+if __name__ == '__main__':
+    artem = AuthSystem()
+    artem.start()
