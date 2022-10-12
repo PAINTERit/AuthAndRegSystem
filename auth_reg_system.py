@@ -91,9 +91,8 @@ class AuthSystem:
         :return: Optional[bool] (возвращает True если авторизация прошла успешно)
         """
         if self.user.verefication_login() not in self.file_data.read_file_data():
-            answer = input(
-                'Пользователя с таким логином не найдено. '
-                'Хотите пройти регистрацию? Введите "да" или "нет": ')
+            answer = input('Пользователя с таким логином не найдено. '
+                           'Хотите пройти регистрацию? Введите "да" или "нет": ')
             if answer == 'да':
                 self.registration()
             else:
