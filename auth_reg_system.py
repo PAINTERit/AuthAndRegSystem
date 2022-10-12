@@ -35,7 +35,7 @@ class User:
     def request_user_data(self, user_login=False) -> str:
         """
         Запрос логина и пароля у пользователя.
-        :return: tuple (возвращает кортеж)
+        :return: str (возвращает пароль или логин)
         """
         if user_login:
             return input('Введите логин (от 3 до 20 символов): ')
