@@ -39,8 +39,7 @@ class User:
         """
         if user_login:
             return input('Введите логин (от 3 до 20 символов): ')
-        else:
-            return input('Введите пароль (от 4 до 32 символов): ')
+        return input('Введите пароль (от 4 до 32 символов): ')
 
 
 class FileData:
