@@ -11,7 +11,7 @@ class User:
         Проверка логина пользователя по требованиям.
         :return: str (возвращает проверенный логин)
         """
-        user_login = self.request_user_data()[0]
+        user_login = self.request_user_data(user_login=True)
         while True:
             if len(user_login) < 3 or len(user_login) > 20:
                 user_login = input('Неверное количество символов, введите логин заново: ')
@@ -24,7 +24,7 @@ class User:
         Проверка пароля пользователя по требованиям.
         :return: str (возвращает проверенный пароль)
         """
-        user_password = self.request_user_data()[1]
+        user_password = self.request_user_data()
         while True:
             if len(user_password) < 4 or len(user_password) > 32:
                 user_password = input('Неверное количество символов, введите пароль заново: ')
@@ -32,14 +32,16 @@ class User:
                 break
         return user_password
 
-    def request_user_data(self) -> tuple:
+    def request_user_data(self, user_login=False) -> str:
         """
         Запрос логина и пароля у пользователя.
         :return: tuple (возвращает кортеж)
         """
-        user_login = input('Введите логин (от 3 до 20 символов): ')
-        user_password = input('Введите пароль (от 4 до 32 символов): ')
-        return user_login, user_password
+        if user_login:
+            return input('Введите логин (от 3 до 20 символов): ')
+        else:
+            return input('Введите пароль (от 4 до 32 символов): ')
+
 
 
 class FileData:
