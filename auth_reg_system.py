@@ -6,7 +6,7 @@ class User:
     Используется для получения логина и пароля пользователя.
     """
 
-    def verefication_login(self) -> str:
+    def verification_login(self) -> str:
         """
         Проверка логина пользователя по требованиям.
         :return: str (возвращает проверенный логин)
@@ -19,7 +19,7 @@ class User:
                 break
         return user_login
 
-    def verefication_password(self) -> str:
+    def verification_password(self) -> str:
         """
         Проверка пароля пользователя по требованиям.
         :return: str (возвращает проверенный пароль)
@@ -32,9 +32,10 @@ class User:
                 break
         return user_password
 
-    def request_user_data(self, user_login=False) -> str:
+    def request_user_data(self, user_login: bool = False) -> str:
         """
         Запрос логина и пароля у пользователя.
+        :param user_login: str (запрошенный логин пользователя)
         :return: str (возвращает пароль или логин)
         """
         if user_login:
@@ -89,7 +90,7 @@ class AuthSystem:
         Проведение авторизации пользователя.
         :return: Optional[bool] (возвращает True если авторизация прошла успешно)
         """
-        if self.user.verefication_login() not in self.file_data.read_file_data():
+        if self.user.verification_login() not in self.file_data.read_file_data():
             answer = input('Пользователя с таким логином не найдено. '
                            'Хотите пройти регистрацию? Введите "да" или "нет": ')
             if answer == 'да':
@@ -108,13 +109,13 @@ class AuthSystem:
         :return: bool (возвращает True если регистрация прошла успешно)
         """
         data = self.file_data.read_file_data()
-        user_login = self.user.verefication_login()
+        user_login = self.user.verification_login()
         while True:
             if user_login in data:
                 print('Такой логин уже существует, придумайте новый новый: ')
-                user_login = self.user.verefication_login()
+                user_login = self.user.verification_login()
             else:
-                self.file_data.add_file_data(user_login, self.user.verefication_password())
+                self.file_data.add_file_data(user_login, self.user.verification_password())
                 break
         print('Вы успешно зарегистрированы!')
         return True
@@ -137,8 +138,7 @@ class AuthSystem:
         action = self.select_action()
         if action == 1 or action == 2:
             return self.auth(action)
-        else:
-            print('Неверное действие! Выберите заново: ')
+        print('Неверное действие! Выберите заново: ')
 
     def select_action(self) -> int:
         """
